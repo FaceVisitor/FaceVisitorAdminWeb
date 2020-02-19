@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
+  "name": "facevisiotor-admin",
   "version": "4.2.1",
-  "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "description": "페이스비지터 어드민",
+  "author": "wndudpower@mgail.com",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
