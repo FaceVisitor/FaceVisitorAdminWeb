@@ -1,7 +1,6 @@
 <template>
-  <div>
-  <div class="app-container ">
-    <el-table v-loading="listLoading" v-if="list._embedded"  :data="list._embedded.stores" border fit highlight-current-row style="width: 100%;">
+  <div class="app-container " style="width: 960px; margin : 0 auto">
+    <el-table v-loading="listLoading" v-if="list && list._embedded" :data="list._embedded.goodsCategories" border highlight-current-row >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -14,27 +13,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="300px" label="가게명">
+      <el-table-column width="300px" label="상품명">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" label="전화번호">
-        <template slot-scope="{row}">
-          <span>{{ row.phone }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="200px" label="영업시간">
-        <template slot-scope="{row}">
-          <span>{{ row.openTime }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="{row}">
-          <router-link :to="`/store/${row.id}`">
+          <router-link :to="`/goods/category/${row.id}`">
             <el-button
               type="success"
               size="small"
@@ -47,22 +34,23 @@
       </el-table-column>
     </el-table>
 
+    <div class="text-center m-3">
+      <router-link to="/goods/category/create">
+        <el-button type="primary" size="big" style="width: 200px; height: 60px; font-size: 18px;">상품 카테고리 추가하기 </el-button>
+      </router-link>
+    </div>
 
-  </div>
-  <div class="text-center m-3">
-    <router-link to="/store/create">
-      <el-button type="primary" size="big" style="width: 250px; height: 80px; font-size: 18px;">매장 추가하기 </el-button>
-    </router-link>
-  </div>
+<!--    <BootPagination :total-pages="page.page.totalPages"></BootPagination>-->
+
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
-import axios from '../../utils/axios'
+import axios from '../../../utils/axios'
 
 export default {
-  name: 'StoreTable',
+  name: 'GoodsCategoryTable',
+  components: {},
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -77,10 +65,6 @@ export default {
     return {
       list: null,
       listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 10
-      }
     }
   },
   created() {
@@ -89,14 +73,9 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      const { data } = await axios.get('/owner/store')
-      console.log(data)
+      const { data } = await axios.get('/owner/goods/category')
       this.list = data
-      // this.list = items.map(v => {
-      //   this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-      //   v.originalTitle = v.title //  will be used when user click the cancel botton
-      //   return v
-      // })
+      console.log(data);
       this.listLoading = false
     }
   }

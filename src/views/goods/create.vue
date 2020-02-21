@@ -15,6 +15,18 @@
           </b-col>
 
           <b-col sm="8">
+            <b-form-group label="상품 카테고리">
+              <b-form-select v-model="goods.category" :options="categoryList"/>
+            </b-form-group>
+          </b-col>
+
+          <b-col sm="8">
+            <b-form-group label="매장">
+              <b-form-select v-model="goods.store" :options="storeList"/>
+            </b-form-group>
+          </b-col>
+
+          <b-col sm="8">
             <b-form-group>
               <label>상품 제조사</label>
               <b-form-input id="name" v-model="goods.vendor" type="text" />
@@ -42,6 +54,8 @@
             </b-form-group>
           </b-col>
 
+
+
           <b-col sm="8">
             <b-form-group label="상품 소개" label-for="textarea">
               <b-form-textarea
@@ -55,7 +69,7 @@
 
           <b-col align-self="end">
             <div slot="footer">
-              <b-button variant="primary" @click="createStore">등록</b-button>
+              <b-button variant="primary" @click="createGoods">등록</b-button>
             </div>
           </b-col>
 
@@ -73,7 +87,7 @@ import axios from '../../utils/axios'
 import MyUpload from '../../components/me/MyUpload'
 
 export default {
-  name: 'StoreCreate',
+  name: 'GoodsCreate',
   components: {
     MyUpload
   },
@@ -85,15 +99,42 @@ export default {
         description: '',
         price: '',
         salePrice: '',
-        images: []
-      }
+        images: [],
+        categoryId : null,
+        storeId : null,
+      },
+      categoryList : [],
+      storeList : [],
+
     }
   },
   computed: {},
+  async created() {
+    try{
+      const categoryResponse = await axios.get('/owner/goods/category');
+      let categoryList= categoryResponse.data;
+      if(categoryList._embedded){
+        this.categoryList = categoryList._embedded.goodsCategories.map(category=>{
+          return {value : category.id , text : category.name}
+        });
+      }
+
+      const storeResponse = await axios.get('/owner/store');
+      let storeList = storeResponse.data;
+      if(storeList._embedded){
+        this.storeList = storeList._embedded.stores.map(store=>{
+          return {value : store.id, text :store.name}
+        })
+      }
+    }catch (e) {
+      this.$message.error(e.response.data);
+    }
+
+  },
   mounted() {
   },
   methods: {
-    createStore() {
+    createGoods() {
       axios.post('/owner/goods', this.goods).then(result => {
         console.log(result)
         this.$message.success('생성되었습니다.')

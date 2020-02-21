@@ -143,6 +143,34 @@ export const constantRoutes = [
 
     ]
   },
+
+  {
+    path: '/goods/category',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/goods/category/index'),
+        name: 'goods_category',
+        meta: { title: '상품 카테고리', icon: 'list', affix: true }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/goods/category/create'),
+        name: 'GoodsCategoryCreate',
+        meta: { title: 'GoodsCategoryCreate', noCache: true },
+        hidden: true
+      },
+      {
+        path: ':id(\\d+)',
+        component: () => import('@/views/goods/category/detail'),
+        name: 'GoodsCategoryDetail',
+        meta: { title: 'GoodsCategoryDetail', noCache: true },
+        hidden: true
+      }
+
+    ]
+  },
   // {
   //   path: '/documentation',
   //   component: Layout,

@@ -15,6 +15,19 @@
           </b-col>
 
           <b-col sm="8">
+            <b-form-group label="상품 카테고리">
+              <b-form-select v-model="goods.category" :options="categoryList"/>
+            </b-form-group>
+          </b-col>
+
+          <b-col sm="8">
+            <b-form-group label="매장">
+              <b-form-select v-model="goods.store" :options="storeList"/>
+            </b-form-group>
+          </b-col>
+
+
+          <b-col sm="8">
             <b-form-group>
               <label>제조사</label>
               <b-form-input id="name" v-model="goods.vendor" type="text" />
@@ -73,7 +86,7 @@ import MyUpload from '../../components/me/MyUpload'
 import { MessageBox } from 'element-ui'
 
 export default {
-  name: 'StoreDetail',
+  name: 'GoodsDetail',
   components: {
     MyUpload
   },
@@ -82,14 +95,48 @@ export default {
       goodsId: null,
       goods: null,
       dialogImageUrl: '',
-      dialogVisible: false
+      dialogVisible: false,
+      storeList : [],
+      categoryList : [],
     }
   },
   computed: {},
   async created() {
-    this.goodsId = this.$route.params.id
-    const { data } = await axios.get('/owner/goods/' + this.goodsId)
-    this.goods = data
+    try {
+
+      const categoryResponse = await axios.get('/owner/goods/category');
+      let categoryList= categoryResponse.data;
+      if(categoryList._embedded){
+        this.categoryList = categoryList._embedded.goodsCategories.map(category=>{
+          return {value : category.id , text : category.name}
+        });
+      }
+
+      const storeResponse = await axios.get('/owner/store');
+      let storeList = storeResponse.data;
+      if(storeList._embedded){
+        this.storeList = storeList._embedded.stores.map(store=>{
+          return {value : store.id, text :store.name}
+        })
+      }
+
+
+      this.goodsId = this.$route.params.id
+      const { data } = await axios.get('/owner/goods/' + this.goodsId)
+      data.store = data.store.id;
+      data.category = data.category.id
+      this.goods = data
+
+    }catch (e) {
+      MessageBox.alert('에러발생', {
+        type: 'error',
+        confirmButtonText: '확인'
+      })
+      console.log(e);
+    }
+
+
+
     console.log(this.goods)
   },
   mounted() {
