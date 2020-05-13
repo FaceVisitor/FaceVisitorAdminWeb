@@ -24,7 +24,7 @@
           <b-col sm="8">
             <b-form-group>
               <label>영업시간</label>
-              <b-form-input id="name" v-model="opentime" type="text" />
+              <b-form-input id="name" type="text" v-model="openTime"/>
             </b-form-group>
           </b-col>
 
@@ -72,21 +72,21 @@
 
 <script>
 
-import { getAccessToken } from '../../utils/token'
-import axios from '../../utils/axios'
-import MyUpload from '../../components/me/MyUpload'
+  import {getAccessToken} from '../../utils/token'
+  import axios from '../../utils/axios'
+  import MyUpload from '../../components/me/MyUpload'
 
-export default {
-  name: 'StoreCreate',
-  components: {
-    MyUpload
-  },
-  data() {
-    return {
-      name: '',
-      description: '',
-      phone: '',
-      openTime: '',
+  export default {
+    name: 'StoreCreate',
+    components: {
+      MyUpload
+    },
+    data() {
+      return {
+        name: '',
+        description: '',
+        phone: '',
+        openTime: '',
       address: '',
       images: []
     }
@@ -97,7 +97,14 @@ export default {
   },
   methods: {
     createStore() {
-      const store = { name: this.name, description: this.description, phone: this.phone, opentime: this.opentime, address: this.address, images: this.images }
+      const store = {
+        name: this.name,
+        description: this.description,
+        phone: this.phone,
+        openTime: this.openTime,
+        address: this.address,
+        images: this.images
+      }
       axios.post('/owner/store', store).then(result => {
         console.log(result)
         this.$message.success('생성되었습니다.')

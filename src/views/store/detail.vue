@@ -72,21 +72,21 @@
 </template>
 
 <script>
-import axios from '../../utils/axios'
-import MyUpload from '../../components/me/MyUpload'
-import { MessageBox } from 'element-ui'
+  import axios from '../../utils/axios'
+  import MyUpload from '../../components/me/MyUpload'
+  import {MessageBox} from 'element-ui'
 
-export default {
-  name: 'StoreDetail',
-  components: {
-    MyUpload
-  },
-  data() {
-    return {
-      storeId: null,
-      store: null,
-      dialogImageUrl: '',
-      dialogVisible: false
+  export default {
+    name: 'StoreDetail',
+    components: {
+      MyUpload
+    },
+    data() {
+      return {
+        storeId: null,
+        store: null,
+        dialogImageUrl: '',
+        dialogVisible: false
     }
   },
   computed: {},
@@ -139,6 +139,7 @@ export default {
       })
     },
     handleUpload(file) {
+      console.log(file)
       axios.post('/owner/store/' + this.storeId + '/image', file).catch(err => {
         console.log(err)
       })

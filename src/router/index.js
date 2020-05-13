@@ -1,16 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-Vue.use(Router)
-
 /* Layout */
 import Layout from '@/layout'
-
 /* Router Modules */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+
+Vue.use(Router)
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -112,7 +110,6 @@ export const constantRoutes = [
         meta: { title: 'StoreDetail', noCache: true },
         hidden: true
       }
-
     ]
   },
 
@@ -165,7 +162,28 @@ export const constantRoutes = [
         path: ':id(\\d+)',
         component: () => import('@/views/goods/category/detail'),
         name: 'GoodsCategoryDetail',
-        meta: { title: 'GoodsCategoryDetail', noCache: true },
+        meta: {title: 'GoodsCategoryDetail', noCache: true},
+        hidden: true
+      }
+
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/user/index'),
+        name: 'goods',
+        meta: {title: '유저', icon: 'list', affix: true}
+      },
+      {
+        path: ':id(\\d+)',
+        component: () => import('@/views/user/detail'),
+        name: 'UserDetail',
+        meta: {title: '유저 상세', noCache: true},
         hidden: true
       }
 
